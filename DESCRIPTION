@@ -1,0 +1,13 @@
+Package: GeneCTLR
+Type: Package
+Title: A Gene Classification Tool with Logistic Regression
+Version: 0.1.0
+Author: Kara Han
+Maintainer: Kara Han <kara.han@mail.utoronto.ca>
+Description: GeneCTLR is an R package for predicting disease gene classifications 
+    and visualization of results using logistic regression modelling.
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+RoxygenNote: 7.1.1
+Depends: R (>= 3.1.0)

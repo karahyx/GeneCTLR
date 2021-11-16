@@ -30,10 +30,10 @@
 plotROC <- function(pred, truth, ...) {
   predobj <- prediction(pred, truth)
   perf <- performance(predobj, "tpr", "fpr")
-  plot(perf, ...)
+  plot(perf, xlim = c(0.0, 1.0), ylim = c(0.0, 1.0), ...)
   area <- auc(truth, pred)
   area <- format(round(area, 4), nsmall = 4)
-  text(x = 0.8, y = 0.1, labels = paste("AUC =", area))
+  text(x = 0.8, y = 0.3, labels = paste("AUC =", area))
 
   # Plot the reference x=y line
   segments(x0 = 0, y0 = 0, x1 = 1, y1 = 1, col = "gray", lty = 2)

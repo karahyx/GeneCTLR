@@ -2,6 +2,7 @@
 
 export(impute)
 export(missingValues)
+export(plotPR)
 export(plotROC)
 export(trainCV)
 import(ROCR)

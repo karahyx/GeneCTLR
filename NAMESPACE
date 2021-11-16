@@ -2,10 +2,11 @@
 
 export(impute)
 export(missingValues)
-export(plotAUC)
+export(plotROC)
 export(trainCV)
 import(ROCR)
 import(caret)
 import(dplyr)
 import(stats)
 importFrom(Amelia,missmap)
+importFrom(pROC,auc)

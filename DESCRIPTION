@@ -21,4 +21,6 @@ Imports:
     Amelia,
     dplyr,
     caret,
-    stats
+    stats,
+    ROCR,
+    pROC

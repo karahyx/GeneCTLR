@@ -14,10 +14,9 @@
 #'
 #' @examples
 #' # Using rbps data set available with package
-#'
 #' # Check for missing values in the rbps data set
-#' MissingValuesResults <- MissingValues(data = rbps)
-#' MissingValuesResults$NA_results
+#' missingValuesResults <- missingValues(data = rbps)
+#' missingValuesResults$NA_results
 #'
 #' @references
 #' Honaker, J., King, G., & Blackwell, M. (2011). Amelia II: A Program for
@@ -25,7 +24,7 @@
 #' \href{https://doi.org/10.18637/jss.v045.i07}{Link}.
 #' @export
 #' @importFrom Amelia missmap
-MissingValues <- function(data) {
+missingValues <- function(data) {
   # Performing checks of user input
   if (is.data.frame(data) == FALSE) {
     stop("data should be a data frame.")

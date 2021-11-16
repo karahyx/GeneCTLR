@@ -19,6 +19,10 @@ Returns the modified data frame data.
 A function that replaces the missing values in a column with values imputed
 from the observed data (i.e. the mean, median, or mode for that variable).
 }
+\details{
+Only variables of class numeric that contain NA values will be
+imputated.
+}
 \examples{
 # Using rbps data set available with package
 # Replace the missing values in rbps with the mean

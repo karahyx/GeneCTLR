@@ -9,6 +9,9 @@
 #'
 #' @return Returns the modified data frame data.
 #'
+#' @details Only variables of class numeric that contain NA values will be
+#' imputated.
+#'
 #' @examples
 #' # Using rbps data set available with package
 #' # Replace the missing values in rbps with the mean

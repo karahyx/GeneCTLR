@@ -4,7 +4,7 @@
 \alias{trainCV}
 \title{Performs logistic model training and cross validation}
 \usage{
-trainCV(data, col_index, K = 5, repetition = 3)
+trainCV(data, col_index, K = 5)
 }
 \arguments{
 \item{data}{A data frame to be trained. The data frame should only contain
@@ -16,9 +16,6 @@ variable column in the data set.}
 
 \item{K}{A positive integer indicating the number of groups that a given
 data set is to be split into.}
-
-\item{repetition}{A positive integer indicating the number of repetitions for
-the K-fold cross validation. Must be at least 2.}
 }
 \value{
 Returns an S3 object of class trainCV with the following elements:
@@ -29,8 +26,8 @@ Returns an S3 object of class trainCV with the following elements:
 }
 }
 \description{
-A function that trains the logistic regression model and performs repeated
-K-fold cross validation.
+A function that trains the logistic regression model and performs a K-fold
+cross validation.
 }
 \examples{
 # Changing the class of hasCanonicalRBDs (an independent variable) to

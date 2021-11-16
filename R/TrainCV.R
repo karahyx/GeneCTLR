@@ -1,7 +1,7 @@
 #' Performs logistic model training and cross validation
 #'
-#' A function that trains the logistic regression model and performs repeated
-#' K-fold cross validation.
+#' A function that trains the logistic regression model and performs a K-fold
+#' cross validation.
 #'
 #' @param data A data frame to be trained. The data frame should only contain
 #' one dependent variable and one or more independent variables. All independent
@@ -10,8 +10,6 @@
 #' variable column in the data set.
 #' @param K A positive integer indicating the number of groups that a given
 #' data set is to be split into.
-#' @param repetition A positive integer indicating the number of repetitions for
-#' the K-fold cross validation. Must be at least 2.
 #'
 #' @return Returns an S3 object of class trainCV with the following elements:
 #' \itemize{
@@ -45,7 +43,7 @@
 #' @import caret
 #' @import dplyr
 
-trainCV <- function(data, col_index, K = 5, repetition = 3) {
+trainCV <- function(data, col_index, K = 5) {
   # Performing checks of user input
   if (is.data.frame(data) == FALSE) {
     stop("data should be a data frame.")
@@ -61,11 +59,6 @@ trainCV <- function(data, col_index, K = 5, repetition = 3) {
     given data set is to be split into.")
   }
 
-  if(repetition <= 0) {
-    stop("repetition should be a positive integer indicating the number of
-    repetitions for the K-fold cross validation.")
-  }
-
   model_list <- list()
   pr_list <- list()
   test_list <- list()
@@ -73,7 +66,7 @@ trainCV <- function(data, col_index, K = 5, repetition = 3) {
   folds <- createFolds(as.factor(data[[col_index]]), k = K, list = FALSE)
   data[[col_index]] <- as.factor(data[[col_index]])
 
-  for (i in 1:repetition) {
+  for (i in 1:K) {
     # Creating training and test data sets
     training_data <- data[which(folds != i), ]
     test_data <- data[which(folds == i), ]
@@ -90,7 +83,8 @@ trainCV <- function(data, col_index, K = 5, repetition = 3) {
     standardized_test <- test_data
     for (j in 1:ncol(means)) {
       col_name <- colnames(means)[j]
-      standardized_test[col_name] <- (test_data[col_name] - as.numeric(means[j])) / as.numeric(sds[j])
+      standardized_test[col_name] <-
+        (test_data[col_name] - as.numeric(means[j])) / as.numeric(sds[j])
     }
 
     # Adding the test set to test_list

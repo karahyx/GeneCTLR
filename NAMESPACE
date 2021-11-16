@@ -2,7 +2,9 @@
 
 export(impute)
 export(missingValues)
+export(plotAUC)
 export(trainCV)
+import(ROCR)
 import(caret)
 import(dplyr)
 import(stats)

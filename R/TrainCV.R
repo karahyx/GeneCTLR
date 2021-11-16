@@ -28,7 +28,7 @@
 #' # Remove the Human Gene and pLI columns
 #' rbps <- subset(rbps, select = -c(1, 8))
 #'
-#' rbps_results <- trainCV(data = rbps, col_index = 10, K = 5, repetition = 3)
+#' rbps_results <- trainCV(data = rbps, col_index = 10)
 #'
 #' # Show the first fitted model
 #' rbps_results$models[[1]]
@@ -47,10 +47,6 @@
 
 trainCV <- function(data, col_index, K = 5, repetition = 3) {
   # Performing checks of user input
-  if (is.data.frame(data) == FALSE) {
-    stop("data should be a data frame.")
-  }
-
   if (is.data.frame(data) == FALSE) {
     stop("data should be a data frame.")
   }
@@ -115,12 +111,11 @@ trainCV <- function(data, col_index, K = 5, repetition = 3) {
     # Obtaining the probabilities predicted from the model
     pr <- stats::predict(model, standardized_test, type = "response")
     pr_list[[i]] <- pr
-
-    results <- list(models = model_list,
-                    predictions = pr_list,
-                    test_sets = test_list)
-    class(results) <- "trainCV"
-    return(results)
   }
+  results <- list(models = model_list,
+                  predictions = pr_list,
+                  test_sets = test_list)
+  class(results) <- "trainCV"
+  return(results)
 }
 

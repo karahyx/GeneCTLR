@@ -38,7 +38,7 @@ MissingValues <- function(data) {
   unique_values <- sapply(data, function(x) length(unique(x)))
 
   # A visual that highlights the missing values
-  missmap(data, main = "Missing values vs observed", margins = c(10, 4),
+  Amelia::missmap(data, main = "Missing values vs observed", margins = c(10, 4),
           x.cex = 0.3)
 
   results <- list(NA_results = NA_values,

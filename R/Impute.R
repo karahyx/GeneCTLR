@@ -1,22 +1,24 @@
 #' Imputation of missing data
 #'
-#' A function that replaces the missing values in a column with the mean,
-#' median, or mode for that variable.
+#' A function that replaces the missing values in a column with values imputed
+#' from the observed data (i.e. the mean, median, or mode for that variable).
 #'
 #' @param data A data frame to be imputated.
-#' @param replace A value used to replace the missing values. Should be either
-#' mean, median, or mode.
+#' @param replace A value used to replace the missing values in a column.
+#' Should be one of the mean, median, or mode.
 #'
 #' @return Returns the modified data frame data.
 #'
 #' @examples
 #' # Using rbps data set available with package
-#'
 #' # Replace the missing values in rbps with the mean
-#' imputated_rbps <- impute(rbps, mean)
-#' View(imputated_rbps)
+#' imputated_rbps <- impute(rbps, "mean")
+#' head(imputated_rbps)
 #'
 #' @references
+#' Little, JA. R. & Rubin B. D. (1987). \emph{Statistical analysis of missing
+#' data}. John Wiley & Sons.
+#'
 #' @export
 impute <- function(data, replace) {
   # Performing checks of user input
@@ -28,23 +30,30 @@ impute <- function(data, replace) {
     stop("replace should be one of mean, median, or mode.")
   }
 
+  new_data <- data
   # Replacing missing values with the mean
   if (replace == "mean") {
-    for(i in 1:ncol(data)){
-      data[is.na(data[,i]), i] <- mean(data[,i], na.rm = TRUE)
+    for (i in 1:ncol(new_data)) {
+      if (is.numeric(new_data[[i]])) {
+        new_data[[i]][is.na(new_data[[i]])] <- mean(new_data[[i]], na.rm = TRUE)
+      }
     }
   }
   # Replacing missing values with the median
   else if (replace == "median") {
-    for(i in 1:ncol(data)){
-      data[is.na(data[,i]), i] <- median(data[,i], na.rm = TRUE)
+    for (i in 1:ncol(new_data)) {
+      if (is.numeric(new_data[[i]])) {
+        new_data[[i]][is.na(new_data[[i]])] <- mean(new_data[[i]], na.rm = TRUE)
+      }
     }
   }
   # Replacing missing values with the mode
   else if (replace == "mode") {
-    for(i in 1:ncol(data)){
-      data[is.na(data[,i]), i] <- mode(data[,i], na.rm = TRUE)
+    for (i in 1:ncol(new_data)) {
+      if (is.numeric(new_data[[i]])) {
+        new_data[[i]][is.na(new_data[[i]])] <- mean(new_data[[i]], na.rm = TRUE)
+      }
     }
   }
-  return(data)
+  return(new_data)
 }

@@ -8,7 +8,7 @@ available datasets.}
 \format{
 A data frame with 1079 rows and 12 variables:
 \describe{
-\item{Human Genes}{1079 human RNA-binding proteins (RBPs) and their gene
+\item{Human Gene}{1079 human RNA-binding proteins (RBPs) and their gene
 names}
 \item{hasCanonicalRBDs}{indicates whether the RBP has a canonical
 RNA-binding domains (RBDs) or not, 1 if yes and 0 if not}
@@ -33,8 +33,9 @@ of the number of protein truncating variants}
 \item{autism_genes}{1 if the gene is associated with autism based on the
 Simons Foundation Autism Research Initiate (SFARI) list, 0 elsewise}
 }
-
-#' @source University of Toronto, Canada.
+}
+\source{
+University of Toronto, Canada.
 }
 \usage{
 rbps

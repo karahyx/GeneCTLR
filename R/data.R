@@ -6,7 +6,7 @@
 #'
 #' @format A data frame with 1079 rows and 12 variables:
 #' \describe{
-#' \item{Human Genes}{1079 human RNA-binding proteins (RBPs) and their gene
+#' \item{Human Gene}{1079 human RNA-binding proteins (RBPs) and their gene
 #' names}
 #' \item{hasCanonicalRBDs}{indicates whether the RBP has a canonical
 #' RNA-binding domains (RBDs) or not, 1 if yes and 0 if not}

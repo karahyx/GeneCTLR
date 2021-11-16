@@ -20,7 +20,9 @@
 #' MissingValuesResults$NA_results
 #'
 #' @references
-#'
+#' Honaker, J., King, G., & Blackwell, M. (2011). Amelia II: A Program for
+#' Missing Data. \emph{Journal of Statistical Software}, 45(7), 1–47.
+#' \href{https://doi.org/10.18637/jss.v045.i07}{Link}.
 #' @export
 #' @importFrom Amelia missmap
 MissingValues <- function(data) {

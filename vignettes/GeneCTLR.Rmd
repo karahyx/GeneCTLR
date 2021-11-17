@@ -36,8 +36,8 @@ It was written in R Markdown, using the [knitr](https://cran.r-project.org/packa
 
 To download **GeneCTLR**, use the following commands:
 ```{r}
-require("devtools")
-devtools::install_github("karahyx/GeneCTLR", build_vignettes = TRUE)
+require("devtdools")
+devtools::install_github("karahyx/GeneCTLR")
 library("GeneCTLR")
 ```
 
@@ -69,7 +69,6 @@ data(rbps)
 To prepare the rbps data set for our analysis, we need to first check whether there exist missing or corrupted data and how many unique values there are for each variable.
 ```{r, echo = TRUE}
 results <- missingValues(rbps)
-results
 ```
 
 ### Taking care of the missing values (data imputation)
@@ -83,7 +82,7 @@ head(imputed_rbps)
 After data cleaning, we are ready to fit the model. The `trainCV()` function 
 builds the logistic regression model with K-fold cross validation, and returns 
 a list object with `models`, `predictions`, and `test_sets`. 
-``` r
+``` {r, echo = TRUE}
 # Since the trainCV function only works with one dependent variable and 
 # independent variables of type numeric, we'll temporarily delete the Human 
 # Gene and the pLI columns.
@@ -92,6 +91,7 @@ new_rbps <- subset(imputed_rbps, select = -c(1, 8))
 # Model fitting
 # The autism_genes variable is the 10th column in new_rbps, so col_index = 10.
 rbps_results <- trainCV(data = new_rbps, col_index = 10, K = 5)
+rbps_results$models
 ```
 
 ### Plotting ROC and Precision-Recall Curves

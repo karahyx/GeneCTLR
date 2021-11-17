@@ -1,19 +1,126 @@
 ---
-title: "GeneCTLR"
-output: rmarkdown::html_vignette
+title: "A Tutorial of GeneCTLR"
+author: "Kara Han"
+date: "`r format(Sys.time(), '%d %b %Y')`"
+output: 
+  rmarkdown::html_vignette:
+    toc: true
+    number_sections: false
 vignette: >
   %\VignetteIndexEntry{GeneCTLR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r setup, include=FALSE}
+library(knitr)
+opts_chunk$set(fig.align = "center", 
+               out.width = "90%",
+               fig.width = 6, fig.height = 5.5,
+               dev.args=list(pointsize=10),
+               par = TRUE, # needed for setting hook 
+               collapse = TRUE, # collapse input & ouput code in chunks
+               warning = FALSE)
+knit_hooks$set(par = function(before, options, envir)
+  { if(before && options$fig.show != "none") 
+       par(family = "sans", mar=c(4.1,4.1,1.1,1.1), mgp=c(3,1,0), tcl=-0.5)
+})
+set.seed(1029) # for exact reproducibility
 ```
 
-```{r setup}
-library(GeneCTLR)
+## Get started
+`GeneCTLR` is an R package designed to provide a workflow for logistic
+regression and gene classifications. In this vignette, we present an example introductory workflow for predicting autism causal genes with a logistic regression model. 
+**This document gives a tour of GeneCTLR (version 0.1.0)**. 
+It was written in R Markdown, using the [knitr](https://cran.r-project.org/package=knitr) package for production. See `help(package = "GeneCTLR")` for further details.
+
+To download **GeneCTLR**, use the following commands:
+```{r}
+require("devtools")
+devtools::install_github("karahyx/GeneCTLR", build_vignettes = TRUE)
+library("GeneCTLR")
+```
+
+To list all sample functions available in the package:
+```{r}
+ls("package:GeneCTLR")
+```
+
+To list all sample datasets available in the package:
+```{r}
+data(package = "GeneCTLR")
+```
+
+## Load in the data
+Here, we analyze a data set of 1072 RNA-binding proteins (RBPs) annotated for a range
+of features, including neuron enrichment, brain enrichment, neuron developmental
+enrichment, pLI scores, whether the RBP contains a canonical RNA-binding protein (RBD), and whether the RBP is associated with autism based on data obtained from the Simons Foundation Autism Research Initiative (SFARI). The **autism_genes**
+variable is the dependent variable in the model.
+
+The rbps data set is a data frame that contains 1079 observations of 12 variables (Human Gene, hasCanonicalRBDs, Neuron Enrichment (Mouse), Neuron Enrichment (Human), Brain Enrichment, day3/day1_diff, day7/day1_diff, pLI, medium_pLI, high_pLI, extreme_pLI, and autism_genes). To load in the rbps data set:
+```{r}
+library("GeneCTLR")
+library(tidyverse)
+data(rbps)
+```
+
+## Workflow
+### Checking for missing values
+To prepare the rbps data set for our analysis, we need to first check whether there exist missing or corrupted data and how many unique values there are for each variable.
+```{r, echo = TRUE}
+results <- missingValues(rbps)
+results
+```
+
+### Taking care of the missing values (data imputation)
+Missing values in the data set can cause problems in our future analysis, so we need to account for the `NAs` by replacing them with the mean or the median of each variable. Here, we will be using the mean for the rbps data set.
+```{r, echo = TRUE}
+imputed_rbps <- impute(rbps, "mean")
+head(imputed_rbps)
+```
+
+### Model fitting
+After data cleaning, we are ready to fit the model. The `trainCV()` function 
+builds the logistic regression model with K-fold cross validation, and returns 
+a list object with `models`, `predictions`, and `test_sets`. 
+``` r
+# Since the trainCV function only works with one dependent variable and 
+# independent variables of type numeric, we'll temporarily delete the Human 
+# Gene and the pLI columns.
+new_rbps <- subset(imputed_rbps, select = -c(1, 8))
+
+# Model fitting
+# The autism_genes variable is the 10th column in new_rbps, so col_index = 10.
+rbps_results <- trainCV(data = new_rbps, col_index = 10, K = 5)
+```
+
+### Plotting ROC and Precision-Recall Curves
+The receiver operating characteristic curve, or ROC curve, is a plot used to demonstrate the diagnostic ability of a logistic regression model by showing the trade-off between the true positive rate and false positive rate using different probability thresholds. The precision-recall curve illustrates the trade-off between precision and recall for different probability thresholds. To plot the ROC and the precision-recall curves in R, use `plotROC()` and `plotPR()`.
+```{r, echo = TRUE}
+plotROC(rbps_results$predictions[[1]], rbps_results$test_sets[[1]]$autism_genes)
+
+plotPR(rbps_results$predictions[[1]], rbps_results$test_sets[[1]]$autism_genes)
+```
+
+### Adding predictions to a desired data set
+Having model predictions appended to the original rbps data set would be helpful for interpreting the results and see which genes have the highest predicted probabilities. 
+```{r, echo = TRUE}
+rbps_pred <- addPredictions(rbps_results, imputed_rbps)
+
+# We can sort the genes by highest to lowest predictions
+rbps_pred <- rbps_pred %>% arrange(-predictions)
+
+head(rbps_pred)
+```
+
+## Package References
+[Han, K. (2021) GeneCTLR (Gene Classification Tool with Logistic Regression):
+an R package for predicting disease gene classifications with logistic regression. An Assessment For BCB410H. Unpublished.](https://github.com/karahyx/GeneCTLR)
+  
+<br>
+
+----
+
+```{r}
+sessionInfo()
 ```

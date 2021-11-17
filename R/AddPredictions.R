@@ -25,7 +25,7 @@
 #' head(new_rbps)
 #'
 #' @export
-AddPredictions <- function(results, data) {
+addPredictions <- function(results, data) {
   # Performing checks of user input
   if (class(results) != "trainCV") {
     stop("results should be an object of class trainCV.")

@@ -4,52 +4,117 @@
 # GeneCTLR
 
 <!-- badges: start -->
-
 <!-- badges: end -->
 
-The goal of GeneCTLR is to …
+## Description
+
+`GeneCTLR` (Gene Classification Tool with Logistic Regression) is an R
+package designed to provide an easy and straightforward workflow for
+building logistic regression models. When combined with gene-disease
+association data, `GeneCTLR` can be used to predict causal genes and
+identify potential predictor variables that may play a crucial role in
+the disease etiology. Though similar R packages already exist for such
+topic, they tend to be relatively hard to grasp for users who are new to
+machine learning. `GeneCTLR`, on the other hand, provides a simple
+workflow for beginner/intermediate R users who are new to logistic
+regression but wish to apply it in their work.
 
 ## Installation
 
-You can install the released version of GeneCTLR from
-[CRAN](https://CRAN.R-project.org) with:
+To install the latest version of the package:
 
 ``` r
-install.packages("GeneCTLR")
+require("devtools")
+devtools::install_github("karahyx/GeneCTLR", build_vignettes = TRUE)
+library("GeneCTLR")
 ```
 
-## Example
-
-This is a basic example which shows you how to solve a common problem:
+## Overview
 
 ``` r
-library(GeneCTLR)
-## basic example code
+ls("package:GeneCTLR")
+data(package = "GeneCTLR")
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`?
-You can include R chunks like so:
+The logistic regression modeling workflow presented by `GeneCTLR`
+contains five steps: checking for missing values, data imputation, model
+training and K-fold cross validation, generating the ROC and
+Precision-Recall curves, and adding model predictions to desired data
+set. The five steps correspond to a total of 6 functions in `GeneCTLR`,
+which contain the following:  
+The *missingValues* function checks for the number of missing values and
+unique values in each column, and provides a visual output for the
+results.  
+The *impute* function replaces the NA values in each variable with the
+mean or the median of that variable.  
+The *trainCV* function trains the model and performs K-fold cross
+validation.  
+The *plotROC* function outputs a Receiver Operating Characteristic curve
+(or ROC curve) based on the given class predictions and true class
+labels.  
+The *plotPR* function outputs a Precision-Recall Curve (or PRC) based on
+the given class predictions and true class labels.  
+The *addPredictions* function extracts the class predictions from the
+models and appends them to a desired data set.  
+
+The package also contains an RNA-binding protein data set rbps. Refer to
+package vignettes for more details.
 
 ``` r
-summary(cars)
-#>      speed           dist       
-#>  Min.   : 4.0   Min.   :  2.00  
-#>  1st Qu.:12.0   1st Qu.: 26.00  
-#>  Median :15.0   Median : 36.00  
-#>  Mean   :15.4   Mean   : 42.98  
-#>  3rd Qu.:19.0   3rd Qu.: 56.00  
-#>  Max.   :25.0   Max.   :120.00
+browseVignettes("GeneCTLR")
 ```
 
-You’ll still need to render `README.Rmd` regularly, to keep `README.md`
-up-to-date. `devtools::build_readme()` is handy for this. You could also
-use GitHub Actions to re-render `README.Rmd` every time you push. An
-example workflow can be found here:
-<https://github.com/r-lib/actions/tree/master/examples>.
+An overview of the package is illustrated below.
 
-You can also embed plots, for example:
+## Contributions
 
-<img src="man/figures/README-pressure-1.png" width="100%" />
+The author of the package is Kara Han. The *missingValues* function
+makes use of the missmap function from the `Amelia` R package to
+generate a visual output of the missing values. The *trainCV* function
+uses the `stats`, `caret`, and `dplyr` packages to perform variable
+standardization and model training. *plotROC* uses the auc function from
+the `pROC` R package and the `ROCR` R package to calculate the area
+under the ROC curve (AUC) values and the `graphics` R package is used to
+generate the plot. Similarly, *plotPR* uses the `ROCR` R package to
+calculate the area under the precision-recall curve (AUPRC) values and
+the `graphics` R package is used to generate the plot.
 
-In that case, don’t forget to commit and push the resulting figure
-files, so they display on GitHub and CRAN.
+## References
+
+Alice, M. (2020, July 5). *How to perform a logistic regression in R:
+R-bloggers*. R.
+<https://www.r-bloggers.com/2015/09/how-to-perform-a-logistic-regression-in-r/>.
+
+Bradley, A. P. (1997). The use of the area under the ROC curve in the
+evaluation of machine learning algorithms. *Pattern Recognition*, 30(7),
+1145–1159. <https://doi.org/10.1016/s0031-3203(96)00142-2>.
+
+Fu, G. H., Yi, L. Z., & Pan, J. (2018). Tuning model parameters in
+class‐imbalanced learning with precision‐recall curve. *Biometrical
+Journal*, 61(3), 652–664. <https://doi.org/10.1002/bimj.201800148>.
+
+Honaker, J., King, G., & Blackwell, M. (2011). Amelia II: A Program for
+Missing Data. *Journal of Statistical Software*, 45(7), 1–47.
+<https://doi.org/10.18637/jss.v045.i07>.
+
+Little, JA. R. & Rubin B. D. (1987). *Statistical analysis of missing
+data*. John Wiley & Sons.
+
+R Core Team (2020). R: A language and environment for statistical
+computing. R Foundation for Statistical Computing, Vienna, Austria.
+<https://www.R-project.org/>.
+
+Selva, P. (n.d.). *Logistic Regression with R*. r-statistics.co.
+<http://r-statistics.co/Logistic-Regression-With-R.html>.
+
+Williams, C. K. (2021). The effect of class imbalance on
+precision-recall curves. *Neural Computation*, 33(4), 853–857.
+<https://doi.org/10.1162/neco_a_01362>.
+
+Zach. (2021, September 9). *How to calculate AUC (area under curve) in
+R*. Statology. <https://www.statology.org/auc-in-r/>.
+
+## Acknowledgements
+
+This package was developed as part of an assessment for 2021 BCB410H:
+Applied Bioinfor- matics, University of Toronto, Toronto, CANADA.

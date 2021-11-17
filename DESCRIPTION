@@ -19,8 +19,10 @@ Config/testthat/edition: 3
 VignetteBuilder: knitr
 Imports: 
     Amelia,
+    stats,
     dplyr,
     caret,
-    stats,
     ROCR,
-    pROC
+    pROC,
+    graphics
+    

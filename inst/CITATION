@@ -1,16 +1,13 @@
 citHeader("To cite GeneCTLR in publications use:")
 
 citEntry(
-  entry    = "Article",
-  title    = ,
-  author   = ,
-  journal  = ,
-  year     = ,
-  volume   = ,
-  number   = ,
-  pages    = ,
-  url      = ,
-  textVersion = paste(
-
-  )
+  entry    = "Unpublished",
+  title    = "GeneCTLR: an R package for predicting disease gene classifications with logistic regression",
+  note     = "Unpublished",
+  author   = "Kara Han",
+  year     = "2021",
+  url      = "https://github.com/karahyx/GeneCTLR",
+  textVersion = paste("Han, K. (2021) GeneCTLR (Gene Classification Tool with
+  Logistic Regression): an R package for predicting disease gene classifications
+  with logistic regression. URL https://github.com/karahyx/GeneCTLR.")
 )

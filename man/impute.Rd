@@ -7,10 +7,10 @@
 impute(data, replace)
 }
 \arguments{
-\item{data}{A data frame to be imputated.}
+\item{data}{A data frame to be imputed.}
 
 \item{replace}{A value used to replace the missing values in a column.
-Should be one of the mean, median, or mode.}
+Should be either the mean or the median.}
 }
 \value{
 Returns the modified data frame data.
@@ -21,13 +21,13 @@ from the observed data (i.e. the mean, median, or mode for that variable).
 }
 \details{
 Only variables of class numeric that contain NA values will be
-imputated.
+imputed.
 }
 \examples{
 # Using rbps data set available with package
 # Replace the missing values in rbps with the mean
-imputated_rbps <- impute(rbps, "mean")
-head(imputated_rbps)
+imputed_rbps <- impute(rbps, "mean")
+head(imputed_rbps)
 
 }
 \references{

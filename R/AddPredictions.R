@@ -26,6 +26,14 @@
 #'
 #' @export
 AddPredictions <- function(results, data) {
+  # Performing checks of user input
+  if (class(results) != "trainCV") {
+    stop("results should be an object of class trainCV.")
+  }
+
+  if (is.data.frame(data) == FALSE) {
+    stop("data should be a data frame.")
+  }
   pr_val <- sort(unlist(results$predictions))
   predictions <- pr_val[match(rownames(data), names(pr_val))]
   new_data <- cbind(data, predictions)

@@ -32,15 +32,13 @@ cross validation.
 \examples{
 # Changing the class of hasCanonicalRBDs (an independent variable) to
 # numeric to be used for the trainCV function
-rbps$hasCanonicalRBDs <- as.numeric(rbps$hasCanonicalRBDs)
+imputed_rbps <- impute(rbps, "mean")
+imputed_rbps$hasCanonicalRBDs <- as.numeric(imputed_rbps$hasCanonicalRBDs)
 
 # Remove the Human Gene and pLI columns
-rbps <- subset(rbps, select = -c(1, 8))
+rbps <- subset(imputed_rbps, select = -c(1, 8))
 
 rbps_results <- trainCV(data = rbps, col_index = 10)
-
-# Show the first fitted model
-rbps_results$models[[1]]
 
 }
 \references{

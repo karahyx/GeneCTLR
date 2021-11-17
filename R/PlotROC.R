@@ -26,6 +26,7 @@
 #'
 #' @export
 #' @import ROCR
+#' @import graphics
 #' @importFrom pROC auc
 plotROC <- function(pred, truth, ...) {
   predobj <- prediction(pred, truth)

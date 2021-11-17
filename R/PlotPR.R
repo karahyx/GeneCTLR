@@ -13,7 +13,14 @@
 #'
 #' @examples
 #' # Using rbps data set available with package
-#' rbps_results <- trainCV(rbps, col_index = 10)
+#' data(rbps)
+#' imputed_rbps <- impute(rbps, "mean")
+#' imputed_rbps$hasCanonicalRBDs <- as.numeric(imputed_rbps$hasCanonicalRBDs)
+#'
+#' # Remove the Human Gene and pLI columns
+#' rbps <- subset(imputed_rbps, select = -c(1, 8))
+#'
+#' rbps_results <- trainCV(data = rbps, col_index = 10)
 #' plotPR(rbps_results$predictions[[3]], rbps_results$test_sets[[3]]$autism_genes)
 #'
 #' @references

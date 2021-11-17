@@ -21,7 +21,7 @@
 #' imputated_rbps <- subset(imputated_rbps, select = -c(1, 8))
 #'
 #' rbps_results <- trainCV(data = imputated_rbps, col_index = 10)
-#' new_rbps <- AddPredictions(rbps_results, rbps)
+#' new_rbps <- addPredictions(rbps_results, rbps)
 #' head(new_rbps)
 #'
 #' @export

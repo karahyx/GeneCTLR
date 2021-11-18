@@ -40,6 +40,7 @@
 #' @importFrom stats predict
 #' @importFrom stats glm
 #' @importFrom stats as.formula
+#' @importFrom stats binomial
 #' @importFrom caret createFolds
 #' @importFrom dplyr summarise_if
 #' @importFrom dplyr mutate_if

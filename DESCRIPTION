@@ -28,4 +28,5 @@ Imports:
     stats,
     ROCR,
     pROC,
-    dplyr
+    dplyr,
+    magrittr

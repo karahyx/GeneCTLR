@@ -2,6 +2,7 @@ library(GeneCTLR)
 
 test_that("a data frame with one dependent variable and multiple independent
           variables", {
+            library(caret)
 
             dat <- twoClassSim(200)
             results <- trainCV(data = dat, col_index = 16)
@@ -13,6 +14,8 @@ test_that("a data frame with one dependent variable and multiple independent
 
 test_that("a data frame with one dependent variable and one independent
           variable", {
+            library(caret)
+
             dat <- twoClassSim(200)
             dat2 <- subset(dat, select = c(1, 16))
             results <- trainCV(data = dat2, col_index = 2)
@@ -23,6 +26,7 @@ test_that("a data frame with one dependent variable and one independent
           })
 
 test_that("TrainCV error upon invalid user input", {
+  library(caret)
   # data provided as a list
   dat <- list(a = c(0, 293, 1), b = c(2, 0, 20))
   expect_error(results <- trainCV(data = dat, col_index = 1))

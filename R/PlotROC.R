@@ -32,8 +32,9 @@
 #' 1145–1159. \href{https://doi.org/10.1016/s0031-3203(96)00142-2}{Link}.
 #'
 #' @export
-#' @import ROCR
-#' @import graphics
+#' @importFrom ROCR prediction
+#' @importFrom ROCR performance
+#' @importFrom graphics plot
 #' @importFrom pROC auc
 plotROC <- function(pred, truth, ...) {
   predobj <- prediction(pred, truth)

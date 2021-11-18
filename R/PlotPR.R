@@ -33,8 +33,9 @@
 #' \href{https://doi.org/10.1162/neco_a_01362}{Link}.
 #'
 #' @export
-#' @import ROCR
-#' @import graphics
+#' @importFrom ROCR prediction
+#' @importFrom ROCR performance
+#' @importFrom graphics plot
 plotPR <- function(pred, truth, ...) {
   predobj <- prediction(pred, truth)
   perf <- performance(predobj, "prec", "rec")

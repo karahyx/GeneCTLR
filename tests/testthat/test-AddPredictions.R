@@ -2,6 +2,7 @@ library(GeneCTLR)
 
 test_that("a data frame with one dependent variable and multiple independent
           variables", {
+            library(caret)
 
             dat <- twoClassSim(200)
             length(dat) # 16
@@ -15,6 +16,8 @@ test_that("a data frame with one dependent variable and multiple independent
 
 test_that("a data frame with one dependent variable and one independent
           variable", {
+            library(caret)
+
             dat <- twoClassSim(200)
             dat2 <- subset(dat, select = c(1, 16))
             length(dat2) # 2

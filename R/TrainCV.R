@@ -37,9 +37,12 @@
 #' \href{http://r-statistics.co/Logistic-Regression-With-R.html}{Link}.
 #'
 #' @export
-#' @import stats
-#' @import caret
-#' @import dplyr
+#' @importFrom stats predict
+#' @importFrom stats glm
+#' @importFrom stats as.formula
+#' @importFrom caret createFolds
+#' @importFrom dplyr summarise_if
+#' @importFrom dplyr mutate_if
 
 trainCV <- function(data, col_index, K = 5) {
   # Performing checks of user input
@@ -101,7 +104,7 @@ trainCV <- function(data, col_index, K = 5) {
     model_list[[i]] <- model
 
     # Obtaining the probabilities predicted from the model
-    pr <- stats::predict(model, standardized_test, type = "response")
+    pr <- predict(model, standardized_test, type = "response")
     pr_list[[i]] <- pr
   }
   results <- list(models = model_list,

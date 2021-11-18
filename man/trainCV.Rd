@@ -20,9 +20,9 @@ data set is to be split into.}
 \value{
 Returns an S3 object of class trainCV with the following elements:
 \itemize{
-  \item models - Fitted logistic regression models.
-  \item predictions - The probabilities predicted by each model.
-  \item test_sets - Test data sets used in each fold of the cross validation.
+\item models - Fitted logistic regression models.
+\item predictions - The probabilities predicted by each model.
+\item test_sets - Test data sets used in each fold of the cross validation.
 }
 }
 \description{

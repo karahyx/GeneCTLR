@@ -12,8 +12,8 @@ missingValues(data)
 \value{
 Returns an object of class MissingValues with results.
 \itemize{
-  \item NA_results - The number of NA values in each column.
-  \item unique_results - The number of unique values in each column.
+\item NA_results - The number of NA values in each column.
+\item unique_results - The number of unique values in each column.
 }
 }
 \description{

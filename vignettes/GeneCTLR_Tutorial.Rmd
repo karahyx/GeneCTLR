@@ -37,7 +37,7 @@ It was written in R Markdown, using the [knitr](https://cran.r-project.org/packa
 To download **GeneCTLR**, use the following commands:
 ```{r}
 require("devtools")
-devtools::install_github("karahyx/GeneCTLR")
+devtools::install_github("karahyx/GeneCTLR", build_vignettes = TRUE)
 library("GeneCTLR")
 ```
 

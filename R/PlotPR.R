@@ -36,6 +36,8 @@
 #' @importFrom ROCR prediction
 #' @importFrom ROCR performance
 #' @importFrom graphics plot
+#' @importFrom graphics text
+#' @importFrom graphics segments
 plotPR <- function(pred, truth, ...) {
   predobj <- prediction(pred, truth)
   perf <- performance(predobj, "prec", "rec")

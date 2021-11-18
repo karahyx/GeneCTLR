@@ -35,6 +35,8 @@
 #' @importFrom ROCR prediction
 #' @importFrom ROCR performance
 #' @importFrom graphics plot
+#' @importFrom graphics text
+#' @importFrom graphics segments
 #' @importFrom pROC auc
 plotROC <- function(pred, truth, ...) {
   predobj <- prediction(pred, truth)

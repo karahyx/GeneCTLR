@@ -23,6 +23,7 @@
 #' data}. John Wiley & Sons.
 #'
 #' @export
+#' @importFrom stats median
 impute <- function(data, replace) {
   # Performing checks of user input
   if (is.data.frame(data) == FALSE) {

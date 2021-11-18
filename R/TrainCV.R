@@ -43,6 +43,7 @@
 #' @importFrom caret createFolds
 #' @importFrom dplyr summarise_if
 #' @importFrom dplyr mutate_if
+#' @importFrom magrittr %>%
 
 trainCV <- function(data, col_index, K = 5) {
   # Performing checks of user input

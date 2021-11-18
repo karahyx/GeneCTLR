@@ -37,13 +37,44 @@ It was written in R Markdown, using the [knitr](https://cran.r-project.org/packa
 To download **GeneCTLR**, use the following commands:
 ```{r}
 require("devtools")
-devtools::install_github("karahyx/GeneCTLR")
+devtools::install_github("karahyx/GeneCTLR", build_vignettes = TRUE)
 library("GeneCTLR")
 ```
 
 To list all sample functions available in the package:
 ```{r}
 ls("package:GeneCTLR")
+```
+
+To list all sample datasets available in the package:
+```{r}
+data(package = "GeneCTLR")
+```
+
+## Load in the data
+Here, we analyze a data set of 1072 RNA-binding proteins (RBPs) annotated for a 
+range of features, including neuron enrichment, brain enrichment, neuron 
+developmental enrichment, pLI scores, whether the RBP contains a canonical 
+RNA-binding protein (RBD), and whether the RBP is associated with autism based 
+on data obtained from the Simons Foundation Autism Research Initiative (SFARI). 
+The **autism_genes** variable is the dependent variable in the model.
+
+The rbps data set is a data frame that contains 1079 observations of 12 
+variables (Human Gene, hasCanonicalRBDs, Neuron Enrichment (Mouse), Neuron 
+Enrichment (Human), Brain Enrichment, day3/day1_diff, day7/day1_diff, pLI, 
+medium_pLI, high_pLI, extreme_pLI, and autism_genes). 
+To load in the rbps data set:
+```{r}
+library("GeneCTLR")
+library(tidyverse)
+data(rbps)
+```
+
+## Workflow
+### Checking for missing values
+To prepare the rbps data set for our analysis, we need to first check whether there exist missing or corrupted data and how many unique values there are for each variable.
+```{r, echo = TRUE}
+results <- missingValues(rbps)
 ```
 
 ### Taking care of the missing values (data imputation)

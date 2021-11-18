@@ -66,6 +66,8 @@ browseVignettes("GeneCTLR")
 
 An overview of the package is illustrated below.
 
+![](./inst/extdata/HAN_K_A1.png)
+
 ## Contributions
 
 The author of the package is Kara Han. The *missingValues* function

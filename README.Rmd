@@ -62,6 +62,8 @@ browseVignettes("GeneCTLR")
 
 An overview of the package is illustrated below.
 
+![](./inst/extdata/HAN_K_A1.png)
+
 ## Contributions
 The author of the package is Kara Han. The *missingValues* function makes use of the missmap function from the `Amelia` R package to generate a visual output of the missing values. The *trainCV* function uses the `stats`, `caret`, and `dplyr` packages to perform variable standardization and model training. *plotROC* uses the auc function from the `pROC` R package and the `ROCR` R package to calculate the area under the ROC curve (AUC) values and the `graphics` R package is used to generate the plot. Similarly, *plotPR* uses the `ROCR` R package to calculate the area under the precision-recall curve (AUPRC) values and the `graphics` R package is used to generate the plot. 
 

@@ -6,7 +6,7 @@
 #' @param data A data frame to be trained. The data frame should only contain
 #' one dependent variable and one or more independent variables. All independent
 #' variables to be used in training the model should be of type numeric.
-#' @param col_index A positive integer indicating the index of the dependent
+#' @param colIndex A positive integer indicating the index of the dependent
 #' variable column in the data set.
 #' @param K A positive integer indicating the number of groups that a given
 #' data set is to be split into.
@@ -15,7 +15,7 @@
 #' \itemize{
 #'   \item models - Fitted logistic regression models.
 #'   \item predictions - The probabilities predicted by each model.
-#'   \item test_sets - Test data sets used in each fold of the cross validation.
+#'   \item testSets - Test data sets used in each fold of the cross validation.
 #' }
 #'
 #' @examples
@@ -27,7 +27,7 @@
 #' # Remove the Human Gene and pLI columns
 #' rbps <- subset(imputedRBPs, select = -c(1, 8))
 #'
-#' results <- trainCV(data = rbps, col_index = 10)
+#' results <- trainCV(data = rbps, colIndex = 10)
 #'
 #' @references
 #' Alice, M. (2020, July 5). \emph{How to perform a logistic regression in R:
@@ -52,8 +52,8 @@ trainCV <- function(data, colIndex, K = 5) {
     stop("data should be a data frame.")
   }
 
-  if (col_index <= 0) {
-    stop("col_index should be a positive integer indicating the index of the
+  if (colIndex <= 0) {
+    stop("colIndex should be a positive integer indicating the index of the
          dependent variable column in data.")
   }
 
@@ -90,7 +90,7 @@ trainCV <- function(data, colIndex, K = 5) {
         (testData[colName] - as.numeric(means[j])) / as.numeric(sds[j])
     }
 
-    # Adding the test set to test_list
+    # Adding the test set to testList
     testList[[i]] <- standardizedTest
 
     # Training the logit regression model
@@ -102,7 +102,7 @@ trainCV <- function(data, colIndex, K = 5) {
                  family = binomial(link = 'logit'),
                  data = standardizedTrain)
 
-    # Adding the model to model_list
+    # Adding the model to modelList
     modelList[[i]] <- model
 
     # Obtaining the probabilities predicted from the model

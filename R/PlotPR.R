@@ -20,7 +20,7 @@
 #' # Remove the Human Gene and pLI columns
 #' rbps <- subset(imputedRBPs, select = -c(1, 8))
 #'
-#' results <- trainCV(data = rbps, col_index = 10)
+#' results <- trainCV(data = rbps, colIndex = 10)
 #' plotPR(results$predictions[[3]], results$testSets[[3]]$autism_genes)
 #'
 #' @references

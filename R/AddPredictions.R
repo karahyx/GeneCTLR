@@ -4,7 +4,7 @@
 #' data.
 #'
 #' @param results An object of class trainCV that contains the following
-#' elements: models, predictions, and test_sets.
+#' elements: models, predictions, and testSets.
 #' @param data A data frame.
 #'
 #' @return Returns a data frame with predictions added as the last column.
@@ -20,7 +20,7 @@
 #' # Remove the Human Gene and pLI columns
 #' imputedRBPs <- subset(imputedRBPs, select = -c(1, 8))
 #'
-#' results <- trainCV(data = imputedRBPs, col_index = 10)
+#' results <- trainCV(data = imputedRBPs, colIndex = 10)
 #' newRBPs <- addPredictions(results, rbps)
 #' head(newRBPs)
 #'
@@ -39,5 +39,5 @@ addPredictions <- function(results, data) {
   predictions <- prValue[match(rownames(data), names(prValue))]
   newData <- cbind(data, predictions)
 
-  return(new_data)
+  return(newData)
 }

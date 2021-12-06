@@ -21,13 +21,13 @@
 #' @examples
 #' # Changing the class of hasCanonicalRBDs (an independent variable) to
 #' # numeric to be used for the trainCV function
-#' imputed_rbps <- impute(rbps, "mean")
-#' imputed_rbps$hasCanonicalRBDs <- as.numeric(imputed_rbps$hasCanonicalRBDs)
+#' imputedRBPs <- impute(rbps, "mean")
+#' imputedRBPs$hasCanonicalRBDs <- as.numeric(imputedRBPs$hasCanonicalRBDs)
 #'
 #' # Remove the Human Gene and pLI columns
-#' rbps <- subset(imputed_rbps, select = -c(1, 8))
+#' rbps <- subset(imputedRBPs, select = -c(1, 8))
 #'
-#' rbps_results <- trainCV(data = rbps, col_index = 10)
+#' results <- trainCV(data = rbps, col_index = 10)
 #'
 #' @references
 #' Alice, M. (2020, July 5). \emph{How to perform a logistic regression in R:
@@ -46,7 +46,7 @@
 #' @importFrom dplyr mutate_if
 #' @importFrom magrittr %>%
 
-trainCV <- function(data, col_index, K = 5) {
+trainCV <- function(data, colIndex, K = 5) {
   # Performing checks of user input
   if (is.data.frame(data) == FALSE) {
     stop("data should be a data frame.")
@@ -62,57 +62,58 @@ trainCV <- function(data, col_index, K = 5) {
     given data set is to be split into.")
   }
 
-  model_list <- list()
-  pr_list <- list()
-  test_list <- list()
+  modelList <- list()
+  prList <- list()
+  testList <- list()
 
-  data[[col_index]] <- as.factor(data[[col_index]])
-  folds <- createFolds(as.factor(data[[col_index]]), k = K, list = FALSE)
+  data[[colIndex]] <- as.factor(data[[colIndex]])
+  folds <- createFolds(as.factor(data[[colIndex]]), k = K, list = FALSE)
 
   for (i in 1:K) {
     # Creating training and test data sets
-    training_data <- data[which(folds != i), ]
-    test_data <- data[which(folds == i), ]
+    trainingData <- data[which(folds != i), ]
+    testData <- data[which(folds == i), ]
 
     # Calculating means and sds of numeric variables
-    means <- training_data %>% summarise_if(is.numeric, mean)
-    sds <- training_data %>% summarise_if(is.numeric, sd)
+    means <- trainingData %>% summarise_if(is.numeric, mean)
+    sds <- trainingData %>% summarise_if(is.numeric, sd)
 
     # Standardize the training set
-    standardized_train <- training_data %>%
+    standardizedTrain <- trainingData %>%
                               mutate_if(is.numeric, ~(scale(.) %>% as.vector))
 
     # Standardize the test set
-    standardized_test <- test_data
+    standardizedTest <- testData
     for (j in 1:ncol(means)) {
-      col_name <- colnames(means)[j]
-      standardized_test[col_name] <-
-        (test_data[col_name] - as.numeric(means[j])) / as.numeric(sds[j])
+      colName <- colnames(means)[j]
+      standardizedTest[colName] <-
+        (testData[colName] - as.numeric(means[j])) / as.numeric(sds[j])
     }
 
     # Adding the test set to test_list
-    test_list[[i]] <- standardized_test
+    testList[[i]] <- standardizedTest
 
     # Training the logit regression model
     model <- glm(
-      as.formula(paste(colnames(data)[col_index], "~",
-                       paste('`', colnames(data)[-col_index], '`',
+      as.formula(paste(colnames(data)[colIndex], "~",
+                       paste('`', colnames(data)[-colIndex], '`',
                              collapse = "+", sep = ""),
                        sep = "")),
                  family = binomial(link = 'logit'),
-                 data = standardized_train)
+                 data = standardizedTrain)
 
     # Adding the model to model_list
-    model_list[[i]] <- model
+    modelList[[i]] <- model
 
     # Obtaining the probabilities predicted from the model
-    pr <- predict(model, standardized_test, type = "response")
-    pr_list[[i]] <- pr
+    pr <- predict(model, standardizedTest, type = "response")
+    prList[[i]] <- pr
   }
-  results <- list(models = model_list,
-                  predictions = pr_list,
-                  test_sets = test_list)
+  results <- list(models = modelList,
+                  predictions = prList,
+                  testSets = testList)
   class(results) <- "trainCV"
+
   return(results)
 }
 

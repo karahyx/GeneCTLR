@@ -15,8 +15,8 @@
 #' @examples
 #' # Using rbps data set available with package
 #' # Replace the missing values in rbps with the mean
-#' imputed_rbps <- impute(rbps, "mean")
-#' head(imputed_rbps)
+#' imputedRBPs <- impute(rbps, "mean")
+#' head(imputedRBPs)
 #'
 #' @references
 #' Little, JA. R. & Rubin B. D. (1987). \emph{Statistical analysis of missing
@@ -34,22 +34,22 @@ impute <- function(data, replace) {
     stop("replace should be either mean or median.")
   }
 
-  new_data <- data
+  newData <- data
   # Replacing missing values with the mean
   if (replace == "mean") {
-    for (i in 1:ncol(new_data)) {
-      if (is.numeric(new_data[[i]])) {
-        new_data[[i]][is.na(new_data[[i]])] <- mean(new_data[[i]], na.rm = TRUE)
+    for (i in 1:ncol(newData)) {
+      if (is.numeric(newData[[i]])) {
+        newData[[i]][is.na(newData[[i]])] <- mean(newData[[i]], na.rm = TRUE)
       }
     }
   }
   # Replacing missing values with the median
   else if (replace == "median") {
-    for (i in 1:ncol(new_data)) {
-      if (is.numeric(new_data[[i]])) {
-        new_data[[i]][is.na(new_data[[i]])] <- median(new_data[[i]], na.rm = TRUE)
+    for (i in 1:ncol(newData)) {
+      if (is.numeric(newData[[i]])) {
+        newData[[i]][is.na(newData[[i]])] <- median(newData[[i]], na.rm = TRUE)
       }
     }
   }
-  return(new_data)
+  return(newData)
 }

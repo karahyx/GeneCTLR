@@ -31,16 +31,17 @@ missingValues <- function(data) {
   }
 
   # Checking for NA values in each column
-  NA_values <- sapply(data, function(x) sum(is.na(x)))
+  naValues <- sapply(data, function(x) sum(is.na(x)))
 
   # Checking for unique values in each column
-  unique_values <- sapply(data, function(x) length(unique(x)))
+  uniqueValues <- sapply(data, function(x) length(unique(x)))
 
   # A visual that highlights the missing values
   Amelia::missmap(data, main = "Missing values vs observed", margins = c(10, 4))
 
-  results <- list(NA_results = NA_values,
-                  unique_results = unique_values)
+  results <- list(naResults = naValues,
+                  uniqueResults = uniqueValues)
   class(results) <- "MissingValues"
+
   return(results)
 }

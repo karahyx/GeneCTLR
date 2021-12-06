@@ -8,7 +8,7 @@ addPredictions(results, data)
 }
 \arguments{
 \item{results}{An object of class trainCV that contains the following
-elements: models, predictions, and test_sets.}
+elements: models, predictions, and testSets.}
 
 \item{data}{A data frame.}
 }
@@ -21,17 +21,17 @@ data.
 }
 \examples{
 # Using rbps data set available with package
-imputated_rbps <- impute(rbps, "mean")
+imputedRBPs <- impute(rbps, "mean")
 
 # Changing the class of hasCanonicalRBDs (an independent variable) to
 # numeric to be used for the trainCV function
-imputated_rbps$hasCanonicalRBDs <- as.numeric(imputated_rbps$hasCanonicalRBDs)
+imputedRBPs$hasCanonicalRBDs <- as.numeric(imputedRBPs$hasCanonicalRBDs)
 
 # Remove the Human Gene and pLI columns
-imputated_rbps <- subset(imputated_rbps, select = -c(1, 8))
+imputedRBPs <- subset(imputedRBPs, select = -c(1, 8))
 
-rbps_results <- trainCV(data = imputated_rbps, col_index = 10)
-new_rbps <- addPredictions(rbps_results, rbps)
-head(new_rbps)
+results <- trainCV(data = imputedRBPs, colIndex = 10)
+newRBPs <- addPredictions(results, rbps)
+head(newRBPs)
 
 }

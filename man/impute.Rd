@@ -26,8 +26,8 @@ imputed.
 \examples{
 # Using rbps data set available with package
 # Replace the missing values in rbps with the mean
-imputed_rbps <- impute(rbps, "mean")
-head(imputed_rbps)
+imputedRBPs <- impute(rbps, "mean")
+head(imputedRBPs)
 
 }
 \references{

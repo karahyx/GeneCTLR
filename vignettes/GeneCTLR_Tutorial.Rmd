@@ -80,43 +80,43 @@ results <- missingValues(rbps)
 ### Taking care of the missing values (data imputation)
 Missing values in the data set can cause problems in our future analysis, so we need to account for the `NAs` by replacing them with the mean or the median of each variable. Here, we will be using the mean for the rbps data set.
 ```{r, echo = TRUE}
-imputed_rbps <- impute(rbps, "mean")
-head(imputed_rbps)
+imputedRBPs <- impute(rbps, "mean")
+head(imputedRBPs)
 ```
 
 ### Model fitting
 After data cleaning, we are ready to fit the model. The `trainCV()` function 
 builds the logistic regression model with K-fold cross validation, and returns 
-a list object with `models`, `predictions`, and `test_sets`. 
+a list object with `models`, `predictions`, and `testSets`. 
 ``` {r, echo = TRUE}
 # Since the trainCV function only works with one dependent variable and 
 # independent variables of type numeric, we'll temporarily delete the Human 
 # Gene and the pLI columns.
-new_rbps <- subset(imputed_rbps, select = -c(1, 8))
+newRBPs <- subset(imputedRBPs, select = -c(1, 8))
 
 # Model fitting
-# The autism_genes variable is the 10th column in new_rbps, so col_index = 10.
-rbps_results <- trainCV(data = new_rbps, col_index = 10, K = 5)
-rbps_results$models
+# The autism_genes variable is the 10th column in newRBPs, so colIndex = 10.
+results <- trainCV(data = newRBPs, colIndex = 10, K = 5)
+results$models
 ```
 
 ### Plotting ROC and Precision-Recall Curves
 The receiver operating characteristic curve, or ROC curve, is a plot used to demonstrate the diagnostic ability of a logistic regression model by showing the trade-off between the true positive rate and false positive rate using different probability thresholds. The precision-recall curve illustrates the trade-off between precision and recall for different probability thresholds. To plot the ROC and the precision-recall curves in R, use `plotROC()` and `plotPR()`.
 ```{r, echo = TRUE}
-plotROC(rbps_results$predictions[[1]], rbps_results$test_sets[[1]]$autism_genes)
+plotROC(results$predictions[[1]], results$testSets[[1]]$autism_genes)
 
-plotPR(rbps_results$predictions[[1]], rbps_results$test_sets[[1]]$autism_genes)
+plotPR(results$predictions[[1]], results$testSets[[1]]$autism_genes)
 ```
 
 ### Adding predictions to a desired data set
 Having model predictions appended to the original rbps data set would be helpful for interpreting the results and see which genes have the highest predicted probabilities. 
 ```{r, echo = TRUE}
-rbps_pred <- addPredictions(rbps_results, imputed_rbps)
+predictions <- addPredictions(results, imputedRBPs)
 
 # We can sort the genes by highest to lowest predictions
-rbps_pred <- rbps_pred %>% arrange(-predictions)
+predictions <- predictions %>% arrange(-predictions)
 
-head(rbps_pred)
+head(predictions)
 ```
 
 ## Package References

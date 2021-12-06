@@ -4,14 +4,14 @@
 \alias{trainCV}
 \title{Performs logistic model training and cross validation}
 \usage{
-trainCV(data, col_index, K = 5)
+trainCV(data, colIndex, K = 5)
 }
 \arguments{
 \item{data}{A data frame to be trained. The data frame should only contain
 one dependent variable and one or more independent variables. All independent
 variables to be used in training the model should be of type numeric.}
 
-\item{col_index}{A positive integer indicating the index of the dependent
+\item{colIndex}{A positive integer indicating the index of the dependent
 variable column in the data set.}
 
 \item{K}{A positive integer indicating the number of groups that a given
@@ -22,7 +22,7 @@ Returns an S3 object of class trainCV with the following elements:
 \itemize{
 \item models - Fitted logistic regression models.
 \item predictions - The probabilities predicted by each model.
-\item test_sets - Test data sets used in each fold of the cross validation.
+\item testSets - Test data sets used in each fold of the cross validation.
 }
 }
 \description{
@@ -32,13 +32,13 @@ cross validation.
 \examples{
 # Changing the class of hasCanonicalRBDs (an independent variable) to
 # numeric to be used for the trainCV function
-imputed_rbps <- impute(rbps, "mean")
-imputed_rbps$hasCanonicalRBDs <- as.numeric(imputed_rbps$hasCanonicalRBDs)
+imputedRBPs <- impute(rbps, "mean")
+imputedRBPs$hasCanonicalRBDs <- as.numeric(imputedRBPs$hasCanonicalRBDs)
 
 # Remove the Human Gene and pLI columns
-rbps <- subset(imputed_rbps, select = -c(1, 8))
+rbps <- subset(imputedRBPs, select = -c(1, 8))
 
-rbps_results <- trainCV(data = rbps, col_index = 10)
+results <- trainCV(data = rbps, colIndex = 10)
 
 }
 \references{

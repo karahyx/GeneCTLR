@@ -86,7 +86,8 @@ https://doi.org/10.18637/jss.v045.i07.
 Little, JA. R. & Rubin B. D. (1987). *Statistical analysis of missing
 data*. John Wiley & Sons.
 
-R Core Team (2020). R: A language and environment for statistical computing. R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
+R Core Team (2021). R: A language and environment for statistical computing. 
+R Foundation for Statistical Computing, Vienna, Austria. https://www.R-project.org/.
 
 Selva, P. (n.d.). *Logistic Regression with R*. r-statistics.co.
 http://r-statistics.co/Logistic-Regression-With-R.html.

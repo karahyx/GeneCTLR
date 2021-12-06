@@ -102,7 +102,7 @@ Missing Data. *Journal of Statistical Software*, 45(7), 1–47.
 Little, JA. R. & Rubin B. D. (1987). *Statistical analysis of missing
 data*. John Wiley & Sons.
 
-R Core Team (2020). R: A language and environment for statistical
+R Core Team (2021). R: A language and environment for statistical
 computing. R Foundation for Statistical Computing, Vienna, Austria.
 <https://www.R-project.org/>.
 

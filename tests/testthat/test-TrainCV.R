@@ -5,7 +5,7 @@ test_that("a data frame with one dependent variable and multiple independent
             library(caret)
 
             dat <- twoClassSim(200)
-            results <- trainCV(data = dat, col_index = 16)
+            results <- trainCV(data = dat, colIndex = 16)
 
             expect_type(results, "list")
             expect_s3_class(results, "trainCV")
@@ -18,7 +18,7 @@ test_that("a data frame with one dependent variable and one independent
 
             dat <- twoClassSim(200)
             dat2 <- subset(dat, select = c(1, 16))
-            results <- trainCV(data = dat2, col_index = 2)
+            results <- trainCV(data = dat2, colIndex = 2)
 
             expect_type(results, "list")
             expect_s3_class(results, "trainCV")
@@ -29,15 +29,15 @@ test_that("TrainCV error upon invalid user input", {
   library(caret)
   # data provided as a list
   dat <- list(a = c(0, 293, 1), b = c(2, 0, 20))
-  expect_error(results <- trainCV(data = dat, col_index = 1))
+  expect_error(results <- trainCV(data = dat, colIndex = 1))
 
   # col_index <= 0
   dat <- twoClassSim(200)
-  expect_error(results <- trainCV(data = dat, col_index = -1))
+  expect_error(results <- trainCV(data = dat, colIndex = -1))
 
   # K <= 1
   dat <- twoClassSim(200)
-  expect_error(results <- trainCV(data = dat, col_index = 16, K = 1))
+  expect_error(results <- trainCV(data = dat, colIndex = 16, K = 1))
 })
 
 

@@ -25,14 +25,14 @@ model predictions and plots the precision-recall curve.
 \examples{
 # Using rbps data set available with package
 data(rbps)
-imputed_rbps <- impute(rbps, "mean")
-imputed_rbps$hasCanonicalRBDs <- as.numeric(imputed_rbps$hasCanonicalRBDs)
+imputedRBPs <- impute(rbps, "mean")
+imputedRBPs$hasCanonicalRBDs <- as.numeric(imputedRBPs$hasCanonicalRBDs)
 
 # Remove the Human Gene and pLI columns
-rbps <- subset(imputed_rbps, select = -c(1, 8))
+rbps <- subset(imputedRBPs, select = -c(1, 8))
 
-rbps_results <- trainCV(data = rbps, col_index = 10)
-plotPR(rbps_results$predictions[[3]], rbps_results$test_sets[[3]]$autism_genes)
+results <- trainCV(data = rbps, colIndex = 10)
+plotPR(results$predictions[[3]], results$testSets[[3]]$autism_genes)
 
 }
 \references{

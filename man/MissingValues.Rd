@@ -12,8 +12,8 @@ missingValues(data)
 \value{
 Returns an object of class MissingValues with results.
 \itemize{
-\item NA_results - The number of NA values in each column.
-\item unique_results - The number of unique values in each column.
+\item naResults - The number of NA values in each column.
+\item uniqueResults - The number of unique values in each column.
 }
 }
 \description{
@@ -25,7 +25,7 @@ variable is farthest to the left in the visual output.
 # Using rbps data set available with package
 # Check for missing values in the rbps data set
 missingValuesResults <- missingValues(data = rbps)
-missingValuesResults$NA_results
+missingValuesResults$naResults
 
 }
 \references{

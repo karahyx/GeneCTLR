@@ -39,6 +39,16 @@
 #' @importFrom graphics text
 #' @importFrom graphics segments
 plotPR <- function(pred, truth, ...) {
+  if (is.vector(pred) == FALSE & is.list(pred) == FALSE &
+      is.matrix(pred) == FALSE & is.data.frame(pred) == FALSE) {
+    stop("pred should be a vector, list, matrix or data frame.")
+  }
+
+  if (is.vector(truth) == FALSE & is.list(truth) == FALSE &
+      is.matrix(truth) == FALSE & is.data.frame(truth) == FALSE) {
+    stop("truth should be a vector, list, matrix or data frame.")
+  }
+
   predobj <- prediction(pred, truth)
   perf <- performance(predobj, "prec", "rec")
   plot(perf, xlim = c(0.0, 1.0), ylim = c(0.0, 1.0), ...)

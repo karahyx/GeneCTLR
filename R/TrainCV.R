@@ -67,7 +67,7 @@ trainCV <- function(data, colIndex, K = 5) {
   testList <- list()
 
   data[[colIndex]] <- as.factor(data[[colIndex]])
-  folds <- createFolds(as.factor(data[[colIndex]]), k = K, list = FALSE)
+  folds <- caret::createFolds(as.factor(data[[colIndex]]), k = K, list = FALSE)
 
   for (i in 1:K) {
     # Creating training and test data sets
@@ -75,12 +75,12 @@ trainCV <- function(data, colIndex, K = 5) {
     testData <- data[which(folds == i), ]
 
     # Calculating means and sds of numeric variables
-    means <- trainingData %>% summarise_if(is.numeric, mean)
-    sds <- trainingData %>% summarise_if(is.numeric, sd)
+    means <- trainingData %>% dplyr::summarise_if(is.numeric, mean)
+    sds <- trainingData %>% dplyr::summarise_if(is.numeric, sd)
 
     # Standardize the training set
     standardizedTrain <- trainingData %>%
-                              mutate_if(is.numeric, ~(scale(.) %>% as.vector))
+      dplyr::mutate_if(is.numeric, ~(scale(.) %>% as.vector))
 
     # Standardize the test set
     standardizedTest <- testData
@@ -94,19 +94,20 @@ trainCV <- function(data, colIndex, K = 5) {
     testList[[i]] <- standardizedTest
 
     # Training the logit regression model
-    model <- glm(
-      as.formula(paste(colnames(data)[colIndex], "~",
-                       paste('`', colnames(data)[-colIndex], '`',
-                             collapse = "+", sep = ""),
-                       sep = "")),
-                 family = binomial(link = 'logit'),
-                 data = standardizedTrain)
+    model <- stats::glm(
+                 stats::as.formula(paste(colnames(data)[colIndex], "~",
+                                         paste('`', colnames(data)[-colIndex],
+                                               '`', collapse = "+", sep = ""),
+                                         sep = "")),
+                 family = stats::binomial(link = 'logit'),
+                 data = standardizedTrain
+                 )
 
     # Adding the model to modelList
     modelList[[i]] <- model
 
     # Obtaining the probabilities predicted from the model
-    pr <- predict(model, standardizedTest, type = "response")
+    pr <- stats::predict(model, standardizedTest, type = "response")
     prList[[i]] <- pr
   }
   results <- list(models = modelList,

@@ -39,8 +39,7 @@ missingValues <- function(data) {
   # A visual that highlights the missing values
   Amelia::missmap(data, main = "Missing values vs observed", margins = c(10, 4))
 
-  results <- list(naResults = naValues,
-                  uniqueResults = uniqueValues)
+  results <- list(naResults = naValues, uniqueResults = uniqueValues)
   class(results) <- "MissingValues"
 
   return(results)

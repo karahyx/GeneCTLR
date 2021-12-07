@@ -47,7 +47,7 @@ impute <- function(data, replace) {
   else if (replace == "median") {
     for (i in 1:ncol(newData)) {
       if (is.numeric(newData[[i]])) {
-        newData[[i]][is.na(newData[[i]])] <- median(newData[[i]], na.rm = TRUE)
+        newData[[i]][is.na(newData[[i]])] <- stats::median(newData[[i]], na.rm = TRUE)
       }
     }
   }

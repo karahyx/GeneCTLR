@@ -49,14 +49,15 @@ plotPR <- function(pred, truth, ...) {
     stop("truth should be a vector, list, matrix or data frame.")
   }
 
-  predobj <- prediction(pred, truth)
-  perf <- performance(predobj, "prec", "rec")
-  plot(perf, xlim = c(0.0, 1.0), ylim = c(0.0, 1.0), ...)
-  aucpr <- performance(predobj, "aucpr")
+  predobj <- ROCR::prediction(pred, truth)
+  perf <- ROCR::performance(predobj, "prec", "rec")
+  # https://stackoverflow.com/questions/11467855/roc-curve-in-r-using-rocr-package
+  graphics::plot(perf, xlim = c(0.0, 1.0), ylim = c(0.0, 1.0), ...)
+  aucpr <- ROCR::performance(predobj, "aucpr")
   area <- aucpr@y.values[[1]]
   area <- format(round(area, 4), nsmall = 4)
-  text(x = 0.8, y = 0.3, labels = paste("AUPRC =", area))
+  graphics::text(x = 0.8, y = 0.3, labels = paste("AUPRC =", area))
 
   # the reference x=y line
-  segments(x0 = 0, y0 = 0, x1 = 1, y1 = 1, col = "gray", lty = 2)
+  graphics::segments(x0 = 0, y0 = 0, x1 = 1, y1 = 1, col = "gray", lty = 2)
 }

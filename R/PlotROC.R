@@ -10,9 +10,6 @@
 #'   \item testSets - Test data sets used in each fold of the cross validation.}
 #' @param dependentVarIndex A positive integer indicating the index of the
 #' dependent variable column in the data set.
-#' @param title A string of characters denoting the title of the plot. An
-#' optional parameter. The default value, "ROC Curve", is used if there isn't
-#' a user-specified value for title.
 #'
 #' @return Returns an ROC curve with AUC values showing the possibility that
 #' the model ranks a random positive event more highly than a random negative
@@ -31,8 +28,7 @@
 #' results <- trainCV(data = newDat, dependentVarIndex = 10)
 #'
 #' plotROC(results = results,
-#'         dependentVarIndex = 10,
-#'         title = "ROC Curves for Autism Gene Prediction")
+#'         dependentVarIndex = 10)
 #'
 #' @references
 #' Bradley, A. P. (1997). The use of the area under the ROC curve in the
@@ -53,7 +49,7 @@
 #' @importFrom cowplot theme_cowplot
 #' @importFrom ggsci scale_color_lancet
 #' @import ggplot2
-plotROC <- function(results, dependentVarIndex, title) {
+plotROC <- function(results, dependentVarIndex) {
 
   # Performing checks of user input
   if (class(results) != "trainCV") {
@@ -66,12 +62,6 @@ plotROC <- function(results, dependentVarIndex, title) {
 
   if (is.numeric(dependentVarIndex) == TRUE && dependentVarIndex < 1) {
     stop("dependentVarIndex should be a positive interger.")
-  }
-
-  if (missing(title) == FALSE) {
-    if (is.character(title) == FALSE) {
-      stop("title should be a string of characters.")
-    }
   }
 
   # Initializing variables
@@ -118,7 +108,7 @@ plotROC <- function(results, dependentVarIndex, title) {
                    axis.line = element_line(size = 1),
                    legend.text = element_text(size = 11, face = "bold"),
                    legend.title = element_blank(),
-                   legend.position = c(0.6, 0.4),
+                   legend.position = c(0.5, 0.5),
                    legend.box.background = element_blank(),
                    legend.key.size = unit(1.0, "cm"),
                    plot.title = element_text(size = 30, hjust = 0.5)) +

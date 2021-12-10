@@ -25,7 +25,7 @@
 #' head(newDat)
 #'
 #' @export
-preProcessData <- function(data, dependentVarIndex, deleteColumns) {
+preProcessData <- function(data, dependentVarIndex, deleteColumns = NULL) {
   # Performing checks of user input
   if (is.data.frame(data) == FALSE) {
     stop("data should be a data frame.")

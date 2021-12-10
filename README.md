@@ -29,6 +29,12 @@ devtools::install_github("karahyx/GeneCTLR", build_vignettes = TRUE)
 library("GeneCTLR")
 ```
 
+To run the Shiny app:
+
+``` r
+runGeneCTLR()
+```
+
 ## Overview
 
 ``` r
@@ -51,10 +57,10 @@ The **preProcessData** function pre-processes the data set based on user
 input to be used in the **trainCV** function.  
 The **trainCV** function trains the model and performs K-fold cross
 validation.  
-The **plotROC** function outputs a Receiver Operating Characteristic
-curve (or ROC curve) based on the given class predictions and true class
-labels.  
-The **plotPR** function outputs a Precision-Recall curve (or PR curve)
+The **plotROC** function outputs Receiver Operating Characteristic
+curves (or ROC curves) based on the given class predictions and true
+class labels.  
+The **plotPR** function outputs Precision-Recall curves (or PR curves)
 based on the given class predictions and true class labels.  
 
 The package also contains an RNA-binding protein data set rbps. Refer to

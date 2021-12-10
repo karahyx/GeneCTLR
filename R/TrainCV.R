@@ -99,8 +99,8 @@ trainCV <- function(data, dependentVarIndex, K = 5) {
     # Training the logit regression model
     model <- stats::glm(
                  stats::as.formula(paste(colnames(data)[dependentVarIndex], "~",
-                                         paste('`', colnames(data)[-dependentVarIndex],
-                                               '`', collapse = "+", sep = ""),
+                                         paste(colnames(data)[-dependentVarIndex],
+                                               collapse = "+", sep = ""),
                                          sep = "")),
                  family = stats::binomial(link = 'logit'),
                  data = standardizedTrain
@@ -112,7 +112,9 @@ trainCV <- function(data, dependentVarIndex, K = 5) {
     # Obtaining the probabilities predicted from the model
     pr <- stats::predict(model, standardizedTest, type = "response")
     prList[[i]] <- pr
+
   }
+
   results <- list(models = modelList,
                   predictions = prList,
                   testSets = testList)

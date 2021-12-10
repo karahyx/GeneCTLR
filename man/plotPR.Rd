@@ -4,7 +4,7 @@
 \alias{plotPR}
 \title{Plots the Precision-Recall (PR) Curve}
 \usage{
-plotPR(results, dependentVarIndex, title)
+plotPR(results, dependentVarIndex)
 }
 \arguments{
 \item{results}{an S3 object of class trainCV with the following elements:
@@ -15,10 +15,6 @@ plotPR(results, dependentVarIndex, title)
 
 \item{dependentVarIndex}{A positive integer indicating the index of the
 dependent variable column in the data set.}
-
-\item{title}{A string of characters denoting the title of the plot. An
-optional parameter. The default value, "Precision-Recall Curve", is used if
-there isn't a user-specified value for title.}
 }
 \value{
 Returns a precision-recall curve with AUCPR values demonstrating
@@ -43,8 +39,7 @@ newDat <- preProcessData(data = imputedRBPs,
 results <- trainCV(data = newDat, dependentVarIndex = 10)
 
 plotPR(results = results,
-       dependentVarIndex = 10,
-       title = "Precision-Recall Curves for Autism Gene Prediction")
+       dependentVarIndex = 10)
 
 }
 \references{

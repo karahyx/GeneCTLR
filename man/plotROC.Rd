@@ -4,7 +4,7 @@
 \alias{plotROC}
 \title{Plots the Receiver Operating Characteristics (ROC) Curve}
 \usage{
-plotROC(results, dependentVarIndex, title)
+plotROC(results, dependentVarIndex)
 }
 \arguments{
 \item{results}{an S3 object of class trainCV with the following elements:
@@ -15,10 +15,6 @@ plotROC(results, dependentVarIndex, title)
 
 \item{dependentVarIndex}{A positive integer indicating the index of the
 dependent variable column in the data set.}
-
-\item{title}{A string of characters denoting the title of the plot. An
-optional parameter. The default value, "ROC Curve", is used if there isn't
-a user-specified value for title.}
 }
 \value{
 Returns an ROC curve with AUC values showing the possibility that
@@ -42,8 +38,7 @@ newDat <- preProcessData(data = imputedRBPs,
 results <- trainCV(data = newDat, dependentVarIndex = 10)
 
 plotROC(results = results,
-        dependentVarIndex = 10,
-        title = "ROC Curves for Autism Gene Prediction")
+        dependentVarIndex = 10)
 
 }
 \references{

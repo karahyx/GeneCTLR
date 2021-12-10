@@ -91,9 +91,9 @@ a list object with `models`, `predictions`, and `testSets`.
 # Since the trainCV function only works with one dependent variable of type
 # factor and independent variables of type numeric, we will use preProcessData()
 # to pre-process the data set for trainCV().
-newDat <- GeneCTLR::preProcessData(data = imputedRBPs,
-                                   dependentVarIndex = 12,
-                                   deleteColumns = c(1, 8))
+newDat <- GeneCTLR:::preProcessData(data = imputedRBPs,
+                                    dependentVarIndex = 12,
+                                    deleteColumns = c(1, 8))
 
 # Model fitting
 # The autism_genes variable is the 10th column in newDat, so dependentVarIndex = 10
@@ -109,13 +109,18 @@ The receiver operating characteristic curve, or ROC curve, is a plot used to dem
 rocCurve <- GeneCTLR::plotROC(results = results,
                               dependentVarIndex = 10,
                               title = "ROC Curves for Autism Gene Prediction")
-rocCurve
 
 prCurve <- GeneCTLR::plotPR(results = results,
                             dependentVarIndex = 10,
                             title = "Precision-Recall Curves for Autism Gene Prediction")
-prCurve
 ```
+<br>
+
+This will output various plots 
+<div style="text-align:center"><img src="plots.PNG" alt="rocPRPlots" width="800"/>
+<div style="text-align:left">
+
+<div style="text-align:left">
 
 
 ## Package References

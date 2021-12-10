@@ -4,7 +4,7 @@
 \alias{preProcessData}
 \title{Pre-process the data set to be used for logistic regression modelling}
 \usage{
-preProcessData(data, dependentVarIndex, deleteColumns)
+preProcessData(data, dependentVarIndex, deleteColumns = NULL)
 }
 \arguments{
 \item{data}{A data frame to be pre-processed.}

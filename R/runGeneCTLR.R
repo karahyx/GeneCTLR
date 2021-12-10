@@ -16,7 +16,7 @@
 #' @export
 #' @importFrom shiny runApp
 runGeneCTLR <- function() {
-  appDir <- system.file("<FolderWithApp.R>",
+  appDir <- system.file("shiny-scripts",
                         package = "GeneCTLR")
   shiny::runApp(appDir, display.mode = "normal")
   return()

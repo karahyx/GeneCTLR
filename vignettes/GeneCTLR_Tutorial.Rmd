@@ -107,12 +107,10 @@ results$models
 The receiver operating characteristic curve, or ROC curve, is a plot used to demonstrate the diagnostic ability of a logistic regression model by showing the trade-off between the true positive rate and false positive rate using different probability thresholds. The precision-recall curve illustrates the trade-off between precision and recall for different probability thresholds. To plot the ROC and the precision-recall curves in R, use `plotROC()` and `plotPR()`.
 ```{r, echo = TRUE}
 rocCurve <- GeneCTLR::plotROC(results = results,
-                              dependentVarIndex = 10,
-                              title = "ROC Curves for Autism Gene Prediction")
+                              dependentVarIndex = 10)
 
 prCurve <- GeneCTLR::plotPR(results = results,
-                            dependentVarIndex = 10,
-                            title = "Precision-Recall Curves for Autism Gene Prediction")
+                            dependentVarIndex = 10)
 ```
 <br>
 

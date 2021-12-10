@@ -14,6 +14,7 @@
 #'
 #' @examples
 #' # Using rbps data set available with package
+#' data(rbps)
 #' # Replace the missing values in rbps with the mean
 #' imputedRBPs <- impute(rbps, "mean")
 #' head(imputedRBPs)
@@ -25,6 +26,7 @@
 #' @export
 #' @importFrom stats median
 impute <- function(data, replace) {
+
   # Performing checks of user input
   if (is.data.frame(data) == FALSE) {
     stop("data should be a data frame.")
@@ -53,3 +55,6 @@ impute <- function(data, replace) {
   }
   return(newData)
 }
+
+
+# [END]

@@ -42,20 +42,20 @@ training and K-fold cross validation, generating the ROC and
 Precision-Recall curves, and adding model predictions to desired data
 set. The five steps correspond to a total of 6 functions in `GeneCTLR`,
 which contain the following:  
-The *missingValues* function checks for the number of missing values and
-unique values in each column, and provides a visual output for the
+The **missingValues** function checks for the number of missing values
+and unique values in each column, and provides a visual output for the
 results.  
-The *impute* function replaces the NA values in each variable with the
+The **impute** function replaces the NA values in each variable with the
 mean or the median of that variable.  
-The *trainCV* function trains the model and performs K-fold cross
+The **preProcessData** function pre-processes the data set based on user
+input to be used in the **trainCV** function.  
+The **trainCV** function trains the model and performs K-fold cross
 validation.  
-The *plotROC* function outputs a Receiver Operating Characteristic curve
-(or ROC curve) based on the given class predictions and true class
+The **plotROC** function outputs a Receiver Operating Characteristic
+curve (or ROC curve) based on the given class predictions and true class
 labels.  
-The *plotPR* function outputs a Precision-Recall Curve (or PRC) based on
-the given class predictions and true class labels.  
-The *addPredictions* function extracts the class predictions from the
-models and appends them to a desired data set.  
+The **plotPR** function outputs a Precision-Recall curve (or PR curve)
+based on the given class predictions and true class labels.  
 
 The package also contains an RNA-binding protein data set rbps. Refer to
 package vignettes for more details.
@@ -70,16 +70,29 @@ An overview of the package is illustrated below.
 
 ## Contributions
 
-The author of the package is Kara Han. The *missingValues* function
-makes use of the missmap function from the `Amelia` R package to
-generate a visual output of the missing values. The *trainCV* function
-uses the `stats`, `caret`, and `dplyr` packages to perform variable
-standardization and model training. *plotROC* uses the auc function from
-the `pROC` R package and the `ROCR` R package to calculate the area
-under the ROC curve (AUC) values and the `graphics` R package is used to
-generate the plot. Similarly, *plotPR* uses the `ROCR` R package to
-calculate the area under the precision-recall curve (AUPRC) values and
-the `graphics` R package is used to generate the plot.
+The author of the package is Kara Han.
+
+The **missingValues** function makes use of the missmap function from
+the `Amelia` R package to generate a visual output of the missing
+values.
+
+The **impute** function uses the median function from the `stats`
+package to calculate the median of each column in the data set. The
+algorithm was developed by the author, Kara Han.
+
+The algorithm for **preProcessData** function was developed by the
+author, Kara Han.
+
+The **trainCV** function uses the `stats`, `caret`, and `dplyr` packages
+to perform variable standardization and model training.
+
+The **plotROC** function uses the auc function from the `pROC` R package
+and the `ROCR` R package to calculate the area under the ROC curve (AUC)
+values.  
+The **plotPR** function uses the `ROCR` R package to calculate the area
+under the precision-recall curve (AUCPR) values. Packages `ggplot2`,
+`cowplot`, and `ggsci` were used to generate the ROC curves and PR
+curves in **plotROC** and **plotPR**, respectively.
 
 ## References
 
@@ -119,4 +132,4 @@ R*. Statology. <https://www.statology.org/auc-in-r/>.
 ## Acknowledgements
 
 This package was developed as part of an assessment for 2021 BCB410H:
-Applied Bioinfor- matics, University of Toronto, Toronto, CANADA.
+Applied Bioinformatics, University of Toronto, Toronto, CANADA.

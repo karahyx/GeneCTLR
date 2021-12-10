@@ -1,5 +1,5 @@
 ---
-title: "A Tutorial of GeneCTLR"
+title: "A tour of GeneCTLR"
 author: "Kara Han"
 date: "`r format(Sys.time(), '%d %b %Y')`"
 output: 
@@ -7,7 +7,7 @@ output:
     toc: true
     number_sections: false
 vignette: >
-  %\VignetteIndexEntry{GeneCTLR}
+  %\VignetteIndexEntry{A tour of GeneCTLR}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -37,7 +37,7 @@ It was written in R Markdown, using the [knitr](https://cran.r-project.org/packa
 To download **GeneCTLR**, use the following commands:
 ```{r}
 require("devtools")
-devtools::install_github("karahyx/GeneCTLR", build_vignettes = TRUE)
+devtools::install_github("karahyx/GeneCTLR")
 library("GeneCTLR")
 ```
 
@@ -65,22 +65,21 @@ Enrichment (Human), Brain Enrichment, day3/day1_diff, day7/day1_diff, pLI,
 medium_pLI, high_pLI, extreme_pLI, and autism_genes). 
 To load in the rbps data set:
 ```{r}
-library("GeneCTLR")
-library(tidyverse)
 data(rbps)
+head(rbps)
 ```
 
 ## Workflow
 ### Checking for missing values
 To prepare the rbps data set for our analysis, we need to first check whether there exist missing or corrupted data and how many unique values there are for each variable.
 ```{r, echo = TRUE}
-results <- missingValues(rbps)
+missingMap <- GeneCTLR::missingValues(rbps)
 ```
 
 ### Taking care of the missing values (data imputation)
 Missing values in the data set can cause problems in our future analysis, so we need to account for the `NAs` by replacing them with the mean or the median of each variable. Here, we will be using the mean for the rbps data set.
 ```{r, echo = TRUE}
-imputedRBPs <- impute(rbps, "mean")
+imputedRBPs <- GeneCTLR::impute(rbps, "mean")
 head(imputedRBPs)
 ```
 
@@ -89,41 +88,65 @@ After data cleaning, we are ready to fit the model. The `trainCV()` function
 builds the logistic regression model with K-fold cross validation, and returns 
 a list object with `models`, `predictions`, and `testSets`. 
 ``` {r, echo = TRUE}
-# Since the trainCV function only works with one dependent variable and 
-# independent variables of type numeric, we'll temporarily delete the Human 
-# Gene and the pLI columns.
-newRBPs <- subset(imputedRBPs, select = -c(1, 8))
+# Since the trainCV function only works with one dependent variable of type
+# factor and independent variables of type numeric, we will use preProcessData()
+# to pre-process the data set for trainCV().
+newDat <- GeneCTLR::preProcessData(data = imputedRBPs,
+                                   dependentVarIndex = 12,
+                                   deleteColumns = c(1, 8))
 
 # Model fitting
-# The autism_genes variable is the 10th column in newRBPs, so colIndex = 10.
-results <- trainCV(data = newRBPs, colIndex = 10, K = 5)
+# The autism_genes variable is the 10th column in newDat, so dependentVarIndex = 10
+# Using default K = 5
+results <- GeneCTLR::trainCV(data = newDat, dependentVarIndex = 10)
+
 results$models
 ```
 
 ### Plotting ROC and Precision-Recall Curves
 The receiver operating characteristic curve, or ROC curve, is a plot used to demonstrate the diagnostic ability of a logistic regression model by showing the trade-off between the true positive rate and false positive rate using different probability thresholds. The precision-recall curve illustrates the trade-off between precision and recall for different probability thresholds. To plot the ROC and the precision-recall curves in R, use `plotROC()` and `plotPR()`.
 ```{r, echo = TRUE}
-plotROC(results$predictions[[1]], results$testSets[[1]]$autism_genes)
+rocCurve <- GeneCTLR::plotROC(results = results,
+                              dependentVarIndex = 10,
+                              title = "ROC Curves for Autism Gene Prediction")
+rocCurve
 
-plotPR(results$predictions[[1]], results$testSets[[1]]$autism_genes)
+prCurve <- GeneCTLR::plotPR(results = results,
+                            dependentVarIndex = 10,
+                            title = "Precision-Recall Curves for Autism Gene Prediction")
+prCurve
 ```
 
-### Adding predictions to a desired data set
-Having model predictions appended to the original rbps data set would be helpful for interpreting the results and see which genes have the highest predicted probabilities. 
-```{r, echo = TRUE}
-predictions <- addPredictions(results, imputedRBPs)
-
-# We can sort the genes by highest to lowest predictions
-predictions <- predictions %>% arrange(-predictions)
-
-head(predictions)
-```
 
 ## Package References
 [Han, K. (2021) GeneCTLR (Gene Classification Tool with Logistic Regression):
 an R package for predicting disease gene classifications with logistic regression. An Assessment For BCB410H. Unpublished.](https://github.com/karahyx/GeneCTLR)
   
 <br>
+
+## Other References
+Alice, M. (2020, July 5). *How to perform a logistic regression in R: R-bloggers.* R. https://www.r-bloggers.com/2015/09/how-to-perform-a-logistic-regression-in-r/.
+
+Boyd, K., Eng, K. H., &amp; Page, C. D. (2013). Area under the precision-recall curve: Point estimates and confidence intervals.
+*Advanced Information Systems Engineering*, 451–466. https://doi.org/10.1007/978-3-642-40994-3_29.
+
+Bradley, A. P. (1997). The use of the area under the ROC curve in the evaluation of machine learning algorithms. *Pattern Recognition*, 30(7), 1145–1159. https://doi.org/10.1016/s0031-3203(96)00142-2.
+
+Fu, G. H., Yi, L. Z., & Pan, J. (2018). Tuning model parameters in class‐imbalanced learning with precision‐recall curve. *Biometrical Journal*, 61(3), 652–664. https://doi.org/10.1002/bimj.201800148
+
+Little, JA. R. & Rubin B. D. (1987). *Statistical analysis of missing data*. John Wiley & Sons.
+
+Honaker, J., King, G., & Blackwell, M. (2011). Amelia II: A Program for Missing Data. *Journal of Statistical Software*, 45(7), 1–47. https://doi.org/10.18637/jss.v045.i07.
+
+Google. (n.d.). *Classification: ROC curve and AUC; machine learning crash course; google developers*. Google. https://developers.google.com/machine-learning/crash-course/classification/.
+
+Grolemund, G. (2015). Learn Shiny - Video Tutorials. https://shiny.rstudio.com/tutorial/.
+
+Selva, P. (n.d.). *Logistic Regression with R.* r-statistics.co. http://r-statistics.co/Logistic-Regression-With-R.html.
+
+Williams, C. K. (2021). The effect of class imbalance on precision-recall curves. *Neural Computation*, 33(4), 853–857. https://doi.org/10.1162/neco_a_01362.
+
+Zach. (2021, September 9). *How to calculate AUC (area under curve) in R.* Statology. https://www.statology.org/auc-in-r/.
 
 ----
 

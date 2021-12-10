@@ -29,4 +29,8 @@ Imports:
     ROCR,
     pROC,
     dplyr,
-    magrittr
+    magrittr,
+    cowplot,
+    ggsci,
+    ggplot2,
+    shiny

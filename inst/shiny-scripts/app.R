@@ -1,93 +1,106 @@
 library(shiny)
 
-# Define UI for random distribution app ----
-ui <- fluidPage(
-
-  # App title ----
-  titlePanel("Tabsets"),
-
-  # Sidebar layout with input and output definitions ----
-  sidebarLayout(
-
-    # Sidebar panel for inputs ----
+ui_impute <- sidebarLayout(
     sidebarPanel(
 
-      # Input: Select the random distribution type ----
-      radioButtons("dist", "Distribution type:",
-                   c("Normal" = "norm",
-                     "Uniform" = "unif",
-                     "Log-normal" = "lnorm",
-                     "Exponential" = "exp")),
+      fileInput(inputId = "impute", label = "Choose EXCEL File",
+                accept = c(
+                  "text/csv",
+                  "text/comma-separated-values,text/plain",
+                  ".csv")
+                ),
 
-      # br() element to introduce extra vertical spacing ----
-      br(),
-
-      # Input: Slider for the number of observations to generate ----
-      sliderInput("n",
-                  "Number of observations:",
-                  value = 500,
-                  min = 1,
-                  max = 1000)
-
+      selectInput(inputId = "replace",
+                label = "Choose the value to be used to replace the missing values:",
+                choices = list("mean",
+                               "median"))
     ),
 
-    # Main panel for displaying outputs ----
     mainPanel(
-
-      # Output: Tabset w/ plot, summary, and table ----
-      tabsetPanel(type = "tabs",
-                  tabPanel("Plot", plotOutput("plot")),
-                  tabPanel("Summary", verbatimTextOutput("summary")),
-                  tabPanel("Table", tableOutput("table"))
-      )
-
+      tableOutput("imputed")
     )
-  )
 )
 
-# Define server logic for random distribution app ----
+ui_model <- fluidPage({
+  sidebarLayout(
+    sidebarPanel(
+      numericInput(inputId = "dependentVarIndex",
+                   label = "Enter the index of the dependent variable column:",
+                   min = 1),
+
+      textInput(inputId = "deleteColumns",
+                label = "Enter one or more column index to be deleted for model fitting, separated by commas:"),
+
+      numericInput(inputId = "newDependentVarIndex",
+                   label = "Enter the updated index of the dependent variable column:",
+                   min = 1),
+
+      sliderInput(inputId = "kVal",
+                  label = "Number of groups that a given data set is to be split into (K)",
+                  value = 5, min = 2, max = 50),
+
+      sliderInput(inputId = "colIndex",
+                  label = "Index of the dependent variable column in the data set",
+                  value = 1, min = 1, max = 50)
+    ),
+
+    mainPanel(
+      textOutput("models"),
+      plotOutput("ROC"),
+      plotOutput("PR")
+      )
+)
+})
+
+
 server <- function(input, output) {
+  dataImputation <- reactive({
+    inFile <- input$impute
+    colToDelete <- as.numeric(unlist(strsplit(input$deleteColumns, ", ")))
 
-  # Reactive expression to generate the requested distribution ----
-  # This is called whenever the inputs change. The output functions
-  # defined below then use the value computed from this expression
-  d <- reactive({
-    dist <- switch(input$dist,
-                   norm = rnorm,
-                   unif = runif,
-                   lnorm = rlnorm,
-                   exp = rexp,
-                   rnorm)
+    if (is.null(inFile)) {
+      return(NULL)
+    }
 
-    dist(input$n)
+    dat <- read.csv(inFile$datapath)
+    imputedDat <- impute(data = dat, replace = input$replace)
+
+    return(imputedDat)
   })
 
-  # Generate a plot of the data ----
-  # Also uses the inputs to build the plot label. Note that the
-  # dependencies on the inputs and the data reactive expression are
-  # both tracked, and all expressions are called in the sequence
-  # implied by the dependency graph.
-  output$plot <- renderPlot({
-    dist <- input$dist
-    n <- input$n
+  modelBuilding <- reactive({
+    imputedDat <- dataImputation()
+    newDat <- preProcessData(data = imputedDat,
+                             dependentVarIndex = input$dependentVarIndex,
+                             deleteColumns = colToDelete)
 
-    hist(d(),
-         main = paste("r", dist, "(", n, ")", sep = ""),
-         col = "#75AADB", border = "white")
+    results <- trainCV(data = newDat,
+                       colIndex = input$newDependentVarIndex,
+                       K = input$kVal)
+    return
   })
 
-  # Generate a summary of the data ----
-  output$summary <- renderPrint({
-    summary(d())
+  # Impute ---------------------------------------------------------------------
+  output$imputed <- renderTable({
+    imputedDat <- dataImputation()
+    print(head(imputedDat))
   })
 
-  # Generate an HTML table view of the data ----
-  output$table <- renderTable({
-    d()
+  # Modeling -------------------------------------------------------------------
+  output$models <- renderText({
+    results <- trainCV(data = newDat,
+                       colIndex = input$newDependentVarIndex,
+                       K = input$kVal)
+
+    print(results$models)
+  })
+
+  output$ROC <- renderPlot({
+
   })
 
 }
 
-# Create Shiny app ----
-shinyApp(ui, server)
+
+shiny::shinyApp(ui = ui, server = server)
 # [END]

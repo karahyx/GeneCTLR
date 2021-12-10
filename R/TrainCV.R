@@ -6,10 +6,11 @@
 #' @param data A data frame to be trained. The data frame should only contain
 #' one dependent variable and one or more independent variables. All independent
 #' variables to be used in training the model should be of type numeric.
-#' @param colIndex A positive integer indicating the index of the dependent
-#' variable column in the data set.
+#' @param dependentVarIndex A positive integer indicating the index of the
+#' dependent variable column in the data set.
 #' @param K A positive integer indicating the number of groups that a given
-#' data set is to be split into.
+#' data set is to be split into. Should be great than or equal to 2. Default
+#' value is K = 5.
 #'
 #' @return Returns an S3 object of class trainCV with the following elements:
 #' \itemize{
@@ -19,15 +20,16 @@
 #' }
 #'
 #' @examples
-#' # Changing the class of hasCanonicalRBDs (an independent variable) to
-#' # numeric to be used for the trainCV function
-#' imputedRBPs <- impute(rbps, "mean")
-#' imputedRBPs$hasCanonicalRBDs <- as.numeric(imputedRBPs$hasCanonicalRBDs)
+#' # Using rbps data set available with package
+#' data(rbps)
+#' imputedRBPs <- impute(data = rbps, replace = "mean")
 #'
-#' # Remove the Human Gene and pLI columns
-#' rbps <- subset(imputedRBPs, select = -c(1, 8))
+#' newDat <- preProcessData(data = imputedRBPs,
+#'                          dependentVarIndex = 12,
+#'                          deleteColumns = c(1, 8))
 #'
-#' results <- trainCV(data = rbps, colIndex = 10)
+#' # Using default K = 5
+#' results <- trainCV(data = newDat, dependentVarIndex = 10)
 #'
 #' @references
 #' Alice, M. (2020, July 5). \emph{How to perform a logistic regression in R:
@@ -37,37 +39,38 @@
 #' \href{http://r-statistics.co/Logistic-Regression-With-R.html}{Link}.
 #'
 #' @export
-#' @importFrom stats predict
-#' @importFrom stats glm
-#' @importFrom stats as.formula
-#' @importFrom stats binomial
+#' @importFrom stats predict glm as.formula binomial
 #' @importFrom caret createFolds
-#' @importFrom dplyr summarise_if
-#' @importFrom dplyr mutate_if
+#' @importFrom dplyr summarise_if mutate_if
 #' @importFrom magrittr %>%
 
-trainCV <- function(data, colIndex, K = 5) {
+trainCV <- function(data, dependentVarIndex, K = 5) {
   # Performing checks of user input
   if (is.data.frame(data) == FALSE) {
     stop("data should be a data frame.")
   }
 
-  if (colIndex <= 0) {
-    stop("colIndex should be a positive integer indicating the index of the
-         dependent variable column in data.")
+  if (is.numeric(dependentVarIndex) == FALSE) {
+    stop("dependentVarIndex should be a positive interger.")
   }
 
-  if (K <= 0) {
-    stop("K should be a positive integer indicating the number of groups that a
-    given data set is to be split into.")
+  if (is.numeric(dependentVarIndex) == TRUE && dependentVarIndex < 1) {
+    stop("dependentVarIndex should be a positive interger.")
+  }
+
+  if (K < 2) {
+    stop("K should be a positive integer greater than or equal to 2,
+    indicating the number of groups that a given data set is to be split into.")
   }
 
   modelList <- list()
   prList <- list()
   testList <- list()
 
-  data[[colIndex]] <- as.factor(data[[colIndex]])
-  folds <- caret::createFolds(as.factor(data[[colIndex]]), k = K, list = FALSE)
+  data[[dependentVarIndex]] <- as.factor(data[[dependentVarIndex]])
+  folds <- caret::createFolds(as.factor(data[[dependentVarIndex]]),
+                              k = K,
+                              list = FALSE)
 
   for (i in 1:K) {
     # Creating training and test data sets
@@ -95,8 +98,8 @@ trainCV <- function(data, colIndex, K = 5) {
 
     # Training the logit regression model
     model <- stats::glm(
-                 stats::as.formula(paste(colnames(data)[colIndex], "~",
-                                         paste('`', colnames(data)[-colIndex],
+                 stats::as.formula(paste(colnames(data)[dependentVarIndex], "~",
+                                         paste('`', colnames(data)[-dependentVarIndex],
                                                '`', collapse = "+", sep = ""),
                                          sep = "")),
                  family = stats::binomial(link = 'logit'),
@@ -118,3 +121,5 @@ trainCV <- function(data, colIndex, K = 5) {
   return(results)
 }
 
+
+# [END]

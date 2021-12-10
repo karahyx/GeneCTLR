@@ -14,6 +14,7 @@
 #'
 #' @examples
 #' # Using rbps data set available with package
+#' data(rbps)
 #' # Check for missing values in the rbps data set
 #' missingValuesResults <- missingValues(data = rbps)
 #' missingValuesResults$naResults
@@ -44,3 +45,6 @@ missingValues <- function(data) {
 
   return(results)
 }
+
+
+# [END]
